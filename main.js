@@ -1,10 +1,9 @@
 import http from "http"
 import fs from "fs"
-import path from "path"
 import crypto from "crypto"
 
-const sendHtml = (res) => {
-  fs.readFile("./index.html", (err, content) => {
+const sendFile = (fileName, res) => {
+  fs.readFile(fileName, (err, content) => {
     if (err) {
       sendText(res, 500, "Internal Server Error")
       return
@@ -20,7 +19,7 @@ const sendText = (statusCode, text, res) => {
 }
 
 const handleGenerate = (res) => {
-  const numbers = []
+  let numbers = []
   const maxAttempts = 1000 // To be safe. If something goes wrong we don't want to be stuck in an infinite loop.
   let attempts = 0
 
@@ -33,16 +32,18 @@ const handleGenerate = (res) => {
   if (numbers.length !== 6 || attempts >= maxAttempts)
     throw new Error("Could not generate lottery numbers")
 
-  const sortedNumbers = numbers.sort((a, b) => a - b)
+  numbers = numbers.sort((a, b) => a - b)
+  const bonus = crypto.randomInt(1, 50)
 
   res.writeHead(200, { "Content-Type": "application/json" })
-  res.end(JSON.stringify(sortedNumbers))
+  res.end(JSON.stringify({ numbers, bonus }))
 }
 
 const server = http.createServer((req, res) => {
   const { url, method } = req
   try {
-    if (url === "/" && method === "GET") return sendHtml(res)
+    if (url === "/" && method === "GET") return sendFile("./index.html", res)
+    if (url === "/styles.css" && method === "GET") return sendFile("./styles.css", res)
     if (url === "/generate" && method === "GET") return handleGenerate(res)
 
     res.writeHead(404, { "Content-Type": "text/plain" })

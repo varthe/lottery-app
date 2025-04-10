@@ -1,16 +1,67 @@
-<h1>Test</h1>
-
-<button id="generateButton">Generate Lottery Numbers</button>
-<p id="output"></p>
+<head>
+  <title>Lottery Number Generator</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <h1>Lottery Number Generator</h1>
+  <button id="generateButton">Generate Lottery Numbers</button>
+  <div id="numberContainer"></div>
+</body>
 
 <script>
   const button = document.getElementById("generateButton")
-  const output = document.getElementById("output")
+  const numberContainer = document.getElementById("numberContainer")
 
   button.addEventListener("click", async () => {
-    const result = await fetch("/generate")
-    const data = await result.json()
+    numberContainer.innerHTML = ""
 
-    output.textContent = JSON.stringify(data, null, 2)
+    try {
+      const result = await fetch("/generate")
+      if (!result.ok) throw new Error(`Server responded with status ${result.status}`)
+
+      const { numbers, bonus } = await result.json()
+      console.log(numbers)
+      if (!Array.isArray(numbers)) throw new Error("Invalid response format. Should be an array")
+      if (numbers.length !== 6)
+        throw new Error(`Invalid number count. Should be 6 but was ${data.length}`)
+
+      numbers.forEach((num) => {
+        const span = document.createElement("span")
+        span.textContent = num
+        span.classList.add("number", getColorClass(num))
+        numberContainer.appendChild(span)
+      })
+
+      const bonusWrapper = document.createElement("div")
+      bonusWrapper.classList.add("bonus-wrapper")
+
+      const label = document.createElement("span")
+      label.textContent = "Bonus:"
+      label.classList.add("bonus-label")
+
+      const bonusSpan = document.createElement("span")
+      bonusSpan.textContent = bonus
+      bonusSpan.classList.add("number", getColorClass(bonus), "bonus")
+
+      bonusWrapper.appendChild(label)
+      bonusWrapper.appendChild(bonusSpan)
+      numberContainer.appendChild(bonusWrapper)
+    } catch (error) {
+      console.error("ERROR:", error)
+
+      const errorMsg = document.createElement("p")
+      errorMsg.textContent = `ERROR: ${error.message}`
+      errorMsg.style.color = "red"
+
+      numberContainer.appendChild(errorMsg)
+    }
   })
+
+  const getColorClass = (num) => {
+    if (num <= 9) return "gray"
+    if (num <= 19) return "blue"
+    if (num <= 29) return "pink"
+    if (num <= 39) return "green"
+    return "yellow"
+  }
 </script>

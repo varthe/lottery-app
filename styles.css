@@ -1,0 +1,58 @@
+body {
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+#generateButton {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 16px;
+  border-radius: 0.25rem;
+}
+
+#numberContainer {
+  margin-top: 1em;
+}
+
+.number {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  margin: 5px;
+  font-family: "Inter", sans-serif;
+}
+
+.bonus-wrapper {
+  margin-top: 1em;
+}
+
+.bonus-label {
+  font-weight: bold;
+  font-size: 18px;
+  color: black;
+}
+
+.gray {
+  background-color: gray;
+}
+.blue {
+  background-color: blue;
+}
+.pink {
+  background-color: red;
+}
+.green {
+  background-color: green;
+}
+.yellow {
+  background-color: #f1c40f;
+}
