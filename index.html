@@ -1,0 +1,16 @@
+<h1>Test</h1>
+
+<button id="generateButton">Generate Lottery Numbers</button>
+<p id="output"></p>
+
+<script>
+  const button = document.getElementById("generateButton")
+  const output = document.getElementById("output")
+
+  button.addEventListener("click", async () => {
+    const result = await fetch("/generate")
+    const data = await result.json()
+
+    output.textContent = JSON.stringify(data, null, 2)
+  })
+</script>
