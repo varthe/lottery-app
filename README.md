@@ -1,4 +1,5 @@
 # Lottery number generator
+![Preview](https://i.imgur.com/21JpKNn.png)
 
 ## Approach
 Simple lottery number generator created using HTML, CSS, JavaScript and a Node.js server.
