@@ -54,5 +54,5 @@ body {
   background-color: green;
 }
 .yellow {
-  background-color: #f1c40f;
+  background-color: #f1c40f; /* More readable than regular yellow */
 }
